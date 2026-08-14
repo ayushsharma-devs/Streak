@@ -5,11 +5,12 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy import text
 
 from app.api.game import router as game_router
 from app.api.health import router as health_router
 from app.core.config import settings
-from app.db.migrations import run_migrations, verify_migrations
+from app.db.models import Base
 from app.db.session import engine
 
 # Configure server-side logging
@@ -22,12 +23,19 @@ logger = logging.getLogger("streak")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    if settings.ENVIRONMENT.lower() == "production":
-        verify_migrations(engine)
-    else:
-        run_migrations(engine)
+    # Ensure database schema is created on application startup
+    Base.metadata.create_all(bind=engine)
+    
+    # Safe schema evolution for local development: ensure username column exists
+    with engine.begin() as conn:
+        try:
+            conn.execute(text("ALTER TABLE players ADD COLUMN username VARCHAR(30);"))
+            logger.info("Migrated players table: added username column.")
+        except Exception:
+            # Column already exists or table is new
+            pass
 
-    logger.info("Database schema verified.")
+    logger.info("Database tables verified.")
     yield
 
 

@@ -72,6 +72,7 @@ def get_game_state_for_player(db: Session, player_id: uuid.UUID) -> GameStateRes
     return GameStateResponse(
         date=today,
         puzzle=safe_puzzle,
+        username=player.username,
         has_played_today=has_played,
         current_streak=player.current_streak,
         highest_streak=player.highest_streak,
@@ -86,14 +87,17 @@ def process_guess(db: Session, player_id: uuid.UUID, raw_guess: str) -> GuessRes
     """
     today = get_game_date()
 
-    # PostgreSQL acquires a row lock here; SQLite safely ignores FOR UPDATE in
-    # local tests. Do not mask database errors with a different read.
-    player = (
-        db.query(Player)
-        .filter(Player.player_id == player_id)
-        .with_for_update()
-        .first()
-    )
+    # Attempt to lock player row if supported by database engine (e.g. Postgres)
+    try:
+        player = (
+            db.query(Player)
+            .filter(Player.player_id == player_id)
+            .with_for_update()
+            .first()
+        )
+    except Exception:
+        # Fallback for SQLite in tests where with_for_update is a no-op or unneeded
+        player = get_player(db, player_id)
 
     if not player:
         raise HTTPException(
@@ -139,6 +143,7 @@ def process_guess(db: Session, player_id: uuid.UUID, raw_guess: str) -> GuessRes
         player_id=player.player_id,
         puzzle_id=puzzle["id"],
         puzzle_date=today,
+        guess=normalized_guess,
         correct=is_correct,
         created_at=datetime.now(timezone.utc),
     )

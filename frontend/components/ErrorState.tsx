@@ -12,12 +12,22 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   onRetry,
 }) => {
   return (
-    <div role="alert" className="p-6 max-w-md mx-auto my-6 rounded-xl border border-danger/25 bg-danger/5 text-center space-y-3 animate-fade-in">
-      <div className="w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-danger/10">
+    <div
+      role="alert"
+      className="p-6 max-w-md mx-auto my-6 rounded-xl border text-center space-y-3 animate-fade-in"
+      style={{
+        background: "rgba(211,47,47,0.05)",
+        borderColor: "rgba(211,47,47,0.25)",
+      }}
+    >
+      <div
+        className="w-10 h-10 mx-auto rounded-full flex items-center justify-center"
+        style={{ background: "rgba(211,47,47,0.12)" }}
+      >
         <svg
-          className="w-5 h-5 text-danger"
+          className="w-5 h-5"
           fill="none"
-          stroke="currentColor"
+          stroke="#D32F2F"
           viewBox="0 0 24 24"
         >
           <path
@@ -36,7 +46,14 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-2 inline-flex items-center px-4 py-2 text-sm font-semibold text-white rounded-xl bg-danger transition hover:bg-red-800 focus:outline-none"
+          className="mt-2 inline-flex items-center px-4 py-2 text-sm font-semibold text-white rounded-xl transition-all focus:outline-none"
+          style={{ background: "#D32F2F" }}
+          onMouseEnter={(e) =>
+            ((e.currentTarget as HTMLButtonElement).style.background = "#B71C1C")
+          }
+          onMouseLeave={(e) =>
+            ((e.currentTarget as HTMLButtonElement).style.background = "#D32F2F")
+          }
         >
           Try Again
         </button>

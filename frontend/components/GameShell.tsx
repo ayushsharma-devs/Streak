@@ -7,7 +7,7 @@ import {
   submitGuess,
   ApiError,
 } from "@/lib/api";
-import { getOrCreatePlayerId } from "@/lib/player";
+import { useUser } from "@/lib/UserContext";
 import { GameStateResponse } from "@/lib/types";
 import { ErrorState } from "./ErrorState";
 import { GuessForm } from "./GuessForm";
@@ -17,21 +17,12 @@ import { ResultCard } from "./ResultCard";
 import { StreakDisplay } from "./StreakDisplay";
 
 export const GameShell: React.FC = () => {
-  const [playerId, setPlayerId] = useState<string | null>(null);
+  const { playerId, username } = useUser();
 
   const [gameState, setGameState] = useState<GameStateResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      setPlayerId(getOrCreatePlayerId());
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Unable to initialise your player identity.");
-      setIsLoading(false);
-    }
-  }, []);
 
   const loadGame = useCallback(async () => {
     if (!playerId) return;
@@ -97,10 +88,12 @@ export const GameShell: React.FC = () => {
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-6 animate-page">
+      {/* Stats & username header */}
       {gameState && (
         <StreakDisplay
           currentStreak={gameState.current_streak}
           highestStreak={gameState.highest_streak}
+          username={username ?? gameState.username}
         />
       )}
 
@@ -114,7 +107,14 @@ export const GameShell: React.FC = () => {
           <PuzzleCard puzzle={gameState.puzzle} dateStr={gameState.date} />
 
           {errorMessage && (
-            <div className="p-3 rounded-xl border border-danger/25 bg-danger/5 text-xs text-center font-medium text-danger animate-fade-in">
+            <div
+              className="p-3 rounded-xl border text-xs text-center font-medium animate-fade-in"
+              style={{
+                background: "rgba(211,47,47,0.06)",
+                borderColor: "rgba(211,47,47,0.25)",
+                color: "#D32F2F",
+              }}
+            >
               {errorMessage}
             </div>
           )}

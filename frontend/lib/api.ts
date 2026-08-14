@@ -2,6 +2,7 @@ import {
   GameStateResponse,
   GuessResponse,
   PlayerCreateResponse,
+  UsernameUpdateResponse,
 } from "./types";
 
 const API_URL =
@@ -61,6 +62,13 @@ async function request<T>(
 }
 
 /**
+ * Health check endpoint to verify backend connectivity.
+ */
+export async function checkHealth(): Promise<{ status: string }> {
+  return request<{ status: string }>("/api/health");
+}
+
+/**
  * Registers an anonymous player UUID with the backend.
  */
 export async function registerPlayer(playerId: string): Promise<PlayerCreateResponse> {
@@ -68,6 +76,23 @@ export async function registerPlayer(playerId: string): Promise<PlayerCreateResp
     "/api/player",
     {
       method: "POST",
+    },
+    playerId
+  );
+}
+
+/**
+ * Sets or updates the display username for the player.
+ */
+export async function updateUsername(
+  playerId: string,
+  username: string
+): Promise<UsernameUpdateResponse> {
+  return request<UsernameUpdateResponse>(
+    "/api/player/username",
+    {
+      method: "PATCH",
+      body: JSON.stringify({ username }),
     },
     playerId
   );

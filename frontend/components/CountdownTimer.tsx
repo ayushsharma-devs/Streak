@@ -1,7 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { secondsUntilUtcMidnight } from "@/lib/time";
+
+/** Returns seconds remaining until next UTC midnight. */
+function secondsUntilMidnightIST(): number {
+  const now = new Date();
+  
+  // Construct midnight for the start of tomorrow in local system time (IST)
+  const midnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0,
+    0,
+    0,
+    0
+  );
+
+  // Difference in milliseconds converted to seconds
+  return Math.floor((midnight.getTime() - now.getTime()) / 1000);
+}
 
 function formatTime(totalSeconds: number): string {
   const h = Math.floor(totalSeconds / 3600);
@@ -15,10 +33,10 @@ export const CountdownTimer: React.FC = () => {
 
   useEffect(() => {
     // Initialise after mount (SSR safe)
-    setSeconds(secondsUntilUtcMidnight());
+    setSeconds(secondsUntilMidnightIST());
 
     const id = setInterval(() => {
-      setSeconds(secondsUntilUtcMidnight());
+      setSeconds(secondsUntilMidnightIST());
     }, 1000);
 
     return () => clearInterval(id);
@@ -32,7 +50,8 @@ export const CountdownTimer: React.FC = () => {
         Next riddle in
       </span>
       <span
-        className="text-2xl font-black tracking-tight font-mono tabular-nums text-accent"
+        className="text-2xl font-black tracking-tight font-mono tabular-nums"
+        style={{ color: "#FF6B00" }}
         aria-live="polite"
         aria-label={`Next riddle in ${formatTime(seconds)}`}
       >

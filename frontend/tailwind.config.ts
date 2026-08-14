@@ -17,7 +17,6 @@ const config: Config = {
         muted:   "#6b6b6b",
         border:  "#e2e0d8",
         surface: "#FFFFFF",
-        danger:  "#D32F2F",
       },
       fontFamily: {
         sans:  ["Inter", "system-ui", "-apple-system", "sans-serif"],

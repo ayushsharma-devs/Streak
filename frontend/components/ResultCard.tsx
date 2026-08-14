@@ -16,17 +16,24 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     <div
       role="region"
       aria-label="Today's result"
-      className={`w-full rounded-2xl border animate-fade-in-scale text-center overflow-hidden ${isCorrect ? "border-accent/30 bg-accent/5" : "border-border bg-neutral-50"}`}
+      className="w-full rounded-2xl border animate-fade-in-scale text-center overflow-hidden"
+      style={{
+        background: isCorrect ? "rgba(255,107,0,0.06)" : "#F9F9F9",
+        borderColor: isCorrect ? "rgba(255,107,0,0.30)" : "var(--border)",
+      }}
     >
       {/* Top accent strip */}
       {isCorrect && (
-        <div className="h-1 w-full bg-accent" />
+        <div className="h-1 w-full" style={{ background: "#FF6B00" }} />
       )}
 
       <div className="p-6 sm:p-8 space-y-4">
         {/* Status */}
         <div className="space-y-1">
-          <h3 className={`text-xl font-black tracking-tight ${isCorrect ? "text-accent" : "text-ink"}`}>
+          <h3
+            className="text-xl font-black tracking-tight"
+            style={{ color: isCorrect ? "#FF6B00" : "#111111" }}
+          >
             {isCorrect ? "Correct!" : "Not today."}
           </h3>
           <p className="text-sm text-muted max-w-xs mx-auto">
@@ -40,7 +47,13 @@ export const ResultCard: React.FC<ResultCardProps> = ({
 
         {/* Streak badge (if correct) */}
         {isCorrect && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 font-bold text-sm text-accent">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border font-bold text-sm"
+            style={{
+              background: "rgba(255,107,0,0.1)",
+              borderColor: "rgba(255,107,0,0.3)",
+              color: "#FF6B00",
+            }}
+          >
             <span>🔥</span>
             <span>{currentStreak}-day streak</span>
           </div>

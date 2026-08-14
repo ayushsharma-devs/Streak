@@ -7,7 +7,9 @@ from sqlalchemy import (
     Date,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
+    String,
     UniqueConstraint,
     Uuid,
 )
@@ -24,6 +26,7 @@ class Player(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
+    username = Column(String(30), nullable=True)
     current_streak = Column(Integer, nullable=False, default=0)
     highest_streak = Column(Integer, nullable=False, default=0)
     last_played_date = Column(Date, nullable=True)
@@ -58,9 +61,11 @@ class Attempt(Base):
         Uuid(as_uuid=True),
         ForeignKey("players.player_id", ondelete="CASCADE"),
         nullable=False,
+        index=True,
     )
     puzzle_id = Column(Integer, nullable=False)
-    puzzle_date = Column(Date, nullable=False)
+    puzzle_date = Column(Date, nullable=False, index=True)
+    guess = Column(String(100), nullable=False)
     correct = Column(Boolean, nullable=False)
     created_at = Column(
         DateTime(timezone=True),
@@ -72,4 +77,5 @@ class Attempt(Base):
 
     __table_args__ = (
         UniqueConstraint("player_id", "puzzle_date", name="uq_player_puzzle_date"),
+        Index("ix_attempts_player_date", "player_id", "puzzle_date"),
     )

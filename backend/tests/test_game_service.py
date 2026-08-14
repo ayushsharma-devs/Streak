@@ -144,6 +144,7 @@ def test_invariant_14_database_uniqueness_prevents_duplicate_attempts():
         player_id=player_id,
         puzzle_id=1,
         puzzle_date=puzzle_date,
+        guess="echo",
         correct=True,
         created_at=datetime.now(timezone.utc),
     )
@@ -156,6 +157,7 @@ def test_invariant_14_database_uniqueness_prevents_duplicate_attempts():
         player_id=player_id,
         puzzle_id=1,
         puzzle_date=puzzle_date,
+        guess="wrong",
         correct=False,
         created_at=datetime.now(timezone.utc),
     )
