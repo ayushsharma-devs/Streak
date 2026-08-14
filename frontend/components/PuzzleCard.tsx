@@ -63,12 +63,7 @@ export const PuzzleCard: React.FC<PuzzleCardProps> = ({ puzzle, dateStr }) => {
           {puzzle.word_lengths.map((len, idx) => (
             <span
               key={idx}
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
-              style={{
-                background: "rgba(255,107,0,0.08)",
-                borderColor: "rgba(255,107,0,0.25)",
-                color: "#E55F00",
-              }}
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-accent/25 bg-accent/10 text-orange-700"
             >
               {len} {len === 1 ? "letter" : "letters"}
             </span>

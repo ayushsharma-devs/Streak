@@ -55,7 +55,6 @@ def test_register_player():
     data1 = res1.json()
     assert data1["player_id"] == player_id
     assert data1["created"] is True
-    assert data1["username"] is None
 
     # Second call: created = False
     res2 = client.post("/api/player", headers=headers)
@@ -63,34 +62,6 @@ def test_register_player():
     data2 = res2.json()
     assert data2["player_id"] == player_id
     assert data2["created"] is False
-
-
-def test_update_username():
-    player_id = str(uuid.uuid4())
-    headers = {"X-Player-ID": player_id}
-    client.post("/api/player", headers=headers)
-
-    # Valid update
-    res = client.patch(
-        "/api/player/username",
-        headers=headers,
-        json={"username": "RiddleMaster_42"},
-    )
-    assert res.status_code == 200
-    assert res.json()["username"] == "RiddleMaster_42"
-
-    # Verify reflected in get today game state
-    state_res = client.get("/api/game/today", headers=headers)
-    assert state_res.status_code == 200
-    assert state_res.json()["username"] == "RiddleMaster_42"
-
-    # Invalid username (too short)
-    res_short = client.patch(
-        "/api/player/username",
-        headers=headers,
-        json={"username": "a"},
-    )
-    assert res_short.status_code == 422
 
 
 def test_invariant_11_answer_is_not_present_in_get_today_game_response():
@@ -141,7 +112,7 @@ def test_invariant_6_second_guess_same_day_rejected():
     assert "already submitted a guess" in res2.json()["detail"]
 
 
-def test_invariant_12_and_13_already_played_state_survives_repeated_get_and_hides_guess():
+def test_invariant_12_and_13_already_played_state_survives_repeated_get_without_storing_guess():
     """
     Invariant 12: stored guess is not exposed by GET /api/game/today
     Invariant 13: already-played state survives repeated GET
@@ -163,7 +134,7 @@ def test_invariant_12_and_13_already_played_state_survives_repeated_get_and_hide
     data1 = res1.json()
     assert data1["has_played_today"] is True
     assert data1["result"] == {"correct": False}
-    # Invariant 12: No raw guess stored/returned
+    # Invariant 12: guesses are never returned
     assert "guess" not in data1
     assert "my_secret_submitted_guess" not in str(data1)
     # Invariant 11: No answer returned

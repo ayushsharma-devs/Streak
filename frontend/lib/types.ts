@@ -11,7 +11,6 @@ export interface GameResult {
 export interface GameStateResponse {
   date: string;
   puzzle: SafePuzzle;
-  username?: string | null;
   has_played_today: boolean;
   current_streak: number;
   highest_streak: number;
@@ -30,11 +29,5 @@ export interface GuessResponse {
 
 export interface PlayerCreateResponse {
   player_id: string;
-  username?: string | null;
   created: boolean;
-}
-
-export interface UsernameUpdateResponse {
-  player_id: string;
-  username: string;
 }

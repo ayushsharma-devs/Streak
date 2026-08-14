@@ -20,7 +20,6 @@ class GameResult(BaseModel):
 class GameStateResponse(BaseModel):
     date: date
     puzzle: SafePuzzle
-    username: Optional[str] = None
     has_played_today: bool
     current_streak: int
     highest_streak: int

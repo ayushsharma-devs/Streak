@@ -5,13 +5,9 @@ from sqlalchemy.orm import Session
 from app.core.security import validate_player_id
 from app.db.session import get_db
 from app.schemas.game import GameStateResponse, GuessRequest, GuessResponse
-from app.schemas.player import (
-    PlayerCreateResponse,
-    UsernameUpdateRequest,
-    UsernameUpdateResponse,
-)
+from app.schemas.player import PlayerCreateResponse
 from app.services.game_service import get_game_state_for_player, process_guess
-from app.services.player_service import get_or_create_player, update_player_username
+from app.services.player_service import get_or_create_player
 
 router = APIRouter(tags=["game"])
 
@@ -28,24 +24,7 @@ def register_or_get_player(
     player, created = get_or_create_player(db, player_id)
     return PlayerCreateResponse(
         player_id=player.player_id,
-        username=player.username,
         created=created,
-    )
-
-
-@router.patch("/api/player/username", response_model=UsernameUpdateResponse)
-def set_username(
-    data: UsernameUpdateRequest,
-    player_id: uuid.UUID = Depends(validate_player_id),
-    db: Session = Depends(get_db),
-) -> UsernameUpdateResponse:
-    """
-    Sets or updates the display username for the player.
-    """
-    player = update_player_username(db, player_id, data.username)
-    return UsernameUpdateResponse(
-        player_id=player.player_id,
-        username=player.username,
     )
 
 

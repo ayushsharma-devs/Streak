@@ -5,6 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from app.core.config import settings
 
 db_url = settings.DATABASE_URL
+assert db_url is not None
 
 # Normalize postgres:// scheme to postgresql:// for SQLAlchemy
 if db_url.startswith("postgres://"):
