@@ -6,12 +6,27 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: "media",
+  // Disable media dark mode — we use a fixed light theme
+  darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        bg:      "#FDFCF5",
+        ink:     "#111111",
+        accent:  "#FF6B00",
+        muted:   "#6b6b6b",
+        border:  "#e2e0d8",
+        surface: "#FFFFFF",
+      },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "-apple-system", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans:  ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        serif: ["Georgia", "serif"],
+        mono:  ["JetBrains Mono", "monospace"],
+      },
+      borderRadius: {
+        xl:  "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
       },
     },
   },

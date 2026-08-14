@@ -1,43 +1,47 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface LoadingStateProps {
   message?: string;
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
-  message = "Loading today's riddle...",
+  message = "Loading today's riddle…",
 }) => {
-  const [showColdStartNotice, setShowColdStartNotice] = useState(false);
+  const [showColdStart, setShowColdStart] = React.useState(false);
 
-  useEffect(() => {
-    // Cold start UX timer (2.5 seconds) for hosted environments like Render
-    const timer = setTimeout(() => {
-      setShowColdStartNotice(true);
-    }, 2500);
-
-    return () => clearTimeout(timer);
+  React.useEffect(() => {
+    const t = setTimeout(() => setShowColdStart(true), 2500);
+    return () => clearTimeout(t);
   }, []);
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className="flex flex-col items-center justify-center p-8 text-center space-y-4 max-w-md mx-auto"
+      className="flex flex-col items-center justify-center p-10 text-center space-y-4 max-w-md mx-auto"
     >
-      <div className="relative flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full border-2 border-stone-200 dark:border-stone-800 animate-spin border-t-amber-600 dark:border-t-amber-500" />
+      <div className="relative">
+        <div
+          className="w-10 h-10 rounded-full border-2 border-border animate-spin"
+          style={{ borderTopColor: "#FF6B00" }}
+        />
       </div>
 
-      <p className="text-stone-600 dark:text-stone-300 font-medium text-sm">
-        {message}
-      </p>
+      <p className="text-sm font-medium text-muted">{message}</p>
 
-      {showColdStartNotice && (
-        <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-lg text-xs text-amber-800 dark:text-amber-300 transition-opacity duration-300 animate-fade-in max-w-xs">
-          <p className="font-semibold mb-0.5">Cold start notice</p>
-          <p>Taking a little longer than usual — the server may be waking up.</p>
+      {showColdStart && (
+        <div
+          className="mt-2 p-3 rounded-xl border text-xs animate-fade-in max-w-xs"
+          style={{
+            background: "rgba(255,107,0,0.07)",
+            borderColor: "rgba(255,107,0,0.25)",
+            color: "#E55F00",
+          }}
+        >
+          <p className="font-semibold mb-0.5">Waking up the server…</p>
+          <p className="text-muted">This might take a few seconds. Hang tight!</p>
         </div>
       )}
     </div>

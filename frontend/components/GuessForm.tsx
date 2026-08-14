@@ -25,7 +25,6 @@ export const GuessForm: React.FC<GuessFormProps> = ({
       setClientError("Please enter your guess before submitting.");
       return;
     }
-
     if (trimmed.length > 100) {
       setClientError("Guess cannot exceed 100 characters.");
       return;
@@ -35,58 +34,72 @@ export const GuessForm: React.FC<GuessFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-4">
+    <form onSubmit={handleSubmit} className="w-full space-y-4" noValidate>
       <div className="space-y-2">
         <label
           htmlFor="daily-guess-input"
-          className="block text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-300"
+          className="block text-xs font-semibold uppercase tracking-wider text-muted"
         >
-          Your Daily Guess
+          Your Guess
         </label>
-        <div className="relative">
-          <input
-            id="daily-guess-input"
-            type="text"
-            value={guess}
-            onChange={(e) => {
-              setGuess(e.target.value);
-              if (clientError) setClientError(null);
-            }}
-            disabled={disabled || isLoading}
-            placeholder="Type your answer here..."
-            maxLength={100}
-            autoComplete="off"
-            autoCapitalize="none"
-            spellCheck="false"
-            className="w-full px-4 py-3.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all text-base shadow-sm font-medium"
-          />
-        </div>
+
+        <input
+          id="daily-guess-input"
+          type="text"
+          value={guess}
+          onChange={(e) => {
+            setGuess(e.target.value);
+            if (clientError) setClientError(null);
+          }}
+          disabled={disabled || isLoading}
+          placeholder="Type your answer…"
+          maxLength={100}
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          className="w-full px-4 py-3.5 rounded-xl border bg-bg text-ink text-base font-medium placeholder-muted/50 focus:outline-none transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+          style={{
+            borderColor: clientError ? "#D32F2F" : "var(--border)",
+          }}
+          onFocus={(e) =>
+            (e.target.style.boxShadow = "0 0 0 2px rgba(255,107,0,0.18)")
+          }
+          onBlur={(e) => (e.target.style.boxShadow = "none")}
+        />
 
         {clientError && (
-          <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">
+          <p className="text-xs font-medium animate-fade-in" style={{ color: "#D32F2F" }}>
             {clientError}
           </p>
         )}
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-        <p className="text-xs text-stone-600 dark:text-stone-300 italic text-center sm:text-left">
-          ⚠️ You get exactly one guess per day. Make it count!
+        <p className="text-xs text-muted italic text-center sm:text-left">
+          One guess per day — make it count.
         </p>
 
         <button
           type="submit"
           id="submit-guess-button"
           disabled={disabled || isLoading || !guess.trim()}
-          className="w-full sm:w-auto min-w-[140px] px-6 py-3 bg-stone-900 hover:bg-stone-800 active:bg-black dark:bg-stone-100 dark:hover:bg-white dark:active:bg-stone-200 text-white dark:text-stone-900 font-semibold rounded-xl transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center space-x-2 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:ring-offset-2"
+          className="w-full sm:w-auto min-w-[140px] px-6 py-3 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 focus:outline-none"
+          style={{ background: "#FF6B00" }}
+          onMouseEnter={(e) => {
+            if (!(e.currentTarget as HTMLButtonElement).disabled)
+              (e.currentTarget as HTMLButtonElement).style.background = "#E55F00";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#FF6B00";
+          }}
         >
           {isLoading ? (
             <>
-              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-              <span>Checking...</span>
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span>Checking…</span>
             </>
           ) : (
-            <span>Submit Guess</span>
+            "Submit Guess"
           )}
         </button>
       </div>

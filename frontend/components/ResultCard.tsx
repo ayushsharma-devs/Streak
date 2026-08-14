@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { CountdownTimer } from "./CountdownTimer";
 
 interface ResultCardProps {
   isCorrect: boolean;
@@ -15,36 +16,53 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     <div
       role="region"
       aria-label="Today's result"
-      className={`w-full p-6 sm:p-8 rounded-2xl border transition-all animate-fade-in text-center space-y-4 ${
-        isCorrect
-          ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100 shadow-sm"
-          : "bg-stone-100 dark:bg-stone-900 border-stone-300 dark:border-stone-800 text-stone-900 dark:text-stone-100 shadow-sm"
-      }`}
+      className="w-full rounded-2xl border animate-fade-in-scale text-center overflow-hidden"
+      style={{
+        background: isCorrect ? "rgba(255,107,0,0.06)" : "#F9F9F9",
+        borderColor: isCorrect ? "rgba(255,107,0,0.30)" : "var(--border)",
+      }}
     >
-      <div className="text-4xl" aria-hidden="true">
-        {isCorrect ? "🎉" : "💡"}
-      </div>
+      {/* Top accent strip */}
+      {isCorrect && (
+        <div className="h-1 w-full" style={{ background: "#FF6B00" }} />
+      )}
 
-      <div className="space-y-1">
-        <h3 className="text-xl font-bold">
-          {isCorrect ? "Correct! Well Done." : "Not quite today!"}
-        </h3>
-        <p className="text-sm opacity-90 max-w-sm mx-auto">
-          {isCorrect
-            ? `You solved today's riddle and your streak is now ${currentStreak} ${
-                currentStreak === 1 ? "day" : "days"
-              }!`
-            : "Your streak was reset, but tomorrow is another chance to start anew."}
-        </p>
-      </div>
-
-      <div className="pt-4 border-t border-current/10 max-w-xs mx-auto">
-        <div className="text-xs uppercase tracking-wider font-semibold opacity-75 mb-1">
-          Next Puzzle
+      <div className="p-6 sm:p-8 space-y-4">
+        {/* Status */}
+        <div className="space-y-1">
+          <h3
+            className="text-xl font-black tracking-tight"
+            style={{ color: isCorrect ? "#FF6B00" : "#111111" }}
+          >
+            {isCorrect ? "Correct!" : "Not today."}
+          </h3>
+          <p className="text-sm text-muted max-w-xs mx-auto">
+            {isCorrect
+              ? `Outstanding — your streak is now ${currentStreak} ${
+                  currentStreak === 1 ? "day" : "days"
+                }.`
+              : "Your streak was reset, but tomorrow is another chance."}
+          </p>
         </div>
-        <p className="text-xs text-stone-600 dark:text-stone-400">
-          A new riddle arrives at midnight UTC. Return tomorrow to keep playing!
-        </p>
+
+        {/* Streak badge (if correct) */}
+        {isCorrect && (
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border font-bold text-sm"
+            style={{
+              background: "rgba(255,107,0,0.1)",
+              borderColor: "rgba(255,107,0,0.3)",
+              color: "#FF6B00",
+            }}
+          >
+            <span>🔥</span>
+            <span>{currentStreak}-day streak</span>
+          </div>
+        )}
+
+        {/* Divider */}
+        <div className="border-t border-border pt-4">
+          <CountdownTimer />
+        </div>
       </div>
     </div>
   );

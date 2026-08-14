@@ -5,10 +5,9 @@ import {
   fetchTodayGame,
   registerPlayer,
   submitGuess,
-  updateUsername,
   ApiError,
 } from "@/lib/api";
-import { getOrCreatePlayerId } from "@/lib/player";
+import { useUser } from "@/lib/UserContext";
 import { GameStateResponse } from "@/lib/types";
 import { ErrorState } from "./ErrorState";
 import { GuessForm } from "./GuessForm";
@@ -18,83 +17,69 @@ import { ResultCard } from "./ResultCard";
 import { StreakDisplay } from "./StreakDisplay";
 
 export const GameShell: React.FC = () => {
-  const [playerId, setPlayerId] = useState<string | null>(null);
+  const { playerId, username } = useUser();
+
   const [gameState, setGameState] = useState<GameStateResponse | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const loadGame = useCallback(async () => {
+    if (!playerId) return;
     setIsLoading(true);
     setErrorMessage(null);
 
     try {
-      // Step 1: Ensure client-side anonymous UUID is created and stored in localStorage
-      const currentId = getOrCreatePlayerId();
-      setPlayerId(currentId);
-
-      // Step 2: Register/verify player with backend
-      await registerPlayer(currentId);
-
-      // Step 3: Fetch today's safe game state
-      const state = await fetchTodayGame(currentId);
+      await registerPlayer(playerId);
+      const state = await fetchTodayGame(playerId);
       setGameState(state);
     } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        setErrorMessage(err.message);
-      } else {
-        setErrorMessage("Unable to load the game. Please check your internet connection.");
-      }
+      setErrorMessage(
+        err instanceof ApiError
+          ? err.message
+          : "Unable to load the game. Please check your internet connection."
+      );
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [playerId]);
 
   useEffect(() => {
-    loadGame();
-  }, [loadGame]);
-
-  const handleUpdateUsername = async (newUsername: string) => {
-    if (!playerId) return;
-    const res = await updateUsername(playerId, newUsername);
-    setGameState((prev) => (prev ? { ...prev, username: res.username } : null));
-  };
+    if (playerId) loadGame();
+  }, [playerId, loadGame]);
 
   const handleGuessSubmit = async (guess: string) => {
     if (!playerId) return;
-
     setIsSubmitting(true);
     setErrorMessage(null);
 
     try {
       const response = await submitGuess(playerId, guess);
-      setGameState((prev) => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          has_played_today: true,
-          current_streak: response.current_streak,
-          highest_streak: response.highest_streak,
-          result: {
-            correct: response.correct,
-          },
-        };
-      });
+      setGameState((prev) =>
+        prev
+          ? {
+              ...prev,
+              has_played_today: true,
+              current_streak: response.current_streak,
+              highest_streak: response.highest_streak,
+              result: { correct: response.correct },
+            }
+          : null
+      );
     } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        if (err.status === 409) {
-          // Player already played (e.g. from another tab). Refresh state to display result.
-          try {
-            const refreshed = await fetchTodayGame(playerId);
-            setGameState(refreshed);
-          } catch {
-            setErrorMessage("You have already submitted a guess for today.");
-          }
-        } else {
-          setErrorMessage(err.message);
+      if (err instanceof ApiError && err.status === 409) {
+        try {
+          const refreshed = await fetchTodayGame(playerId);
+          setGameState(refreshed);
+        } catch {
+          setErrorMessage("You have already submitted a guess for today.");
         }
       } else {
-        setErrorMessage("Failed to submit your guess. Please try again.");
+        setErrorMessage(
+          err instanceof ApiError
+            ? err.message
+            : "Failed to submit your guess. Please try again."
+        );
       }
     } finally {
       setIsSubmitting(false);
@@ -102,42 +87,45 @@ export const GameShell: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-6">
-      {/* Top Streak & Username Header */}
+    <div className="w-full max-w-xl mx-auto space-y-6 animate-page">
+      {/* Stats & username header */}
       {gameState && (
         <StreakDisplay
           currentStreak={gameState.current_streak}
           highestStreak={gameState.highest_streak}
-          username={gameState.username}
-          onUpdateUsername={handleUpdateUsername}
+          username={username ?? gameState.username}
         />
       )}
 
-      {/* Main Content Area */}
+      {/* Main content */}
       {isLoading ? (
         <LoadingState />
       ) : errorMessage && !gameState ? (
         <ErrorState message={errorMessage} onRetry={loadGame} />
       ) : gameState ? (
-        <div className="space-y-6">
-          {/* Daily Puzzle Card */}
+        <div className="space-y-5">
           <PuzzleCard puzzle={gameState.puzzle} dateStr={gameState.date} />
 
-          {/* Error notice if inline submission error occurred */}
           {errorMessage && (
-            <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 rounded-xl text-xs text-rose-700 dark:text-rose-300 text-center font-medium animate-fade-in">
+            <div
+              className="p-3 rounded-xl border text-xs text-center font-medium animate-fade-in"
+              style={{
+                background: "rgba(211,47,47,0.06)",
+                borderColor: "rgba(211,47,47,0.25)",
+                color: "#D32F2F",
+              }}
+            >
               {errorMessage}
             </div>
           )}
 
-          {/* Interactive or Completed Game Section */}
           {gameState.has_played_today ? (
             <ResultCard
               isCorrect={gameState.result?.correct ?? false}
               currentStreak={gameState.current_streak}
             />
           ) : (
-            <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+            <div className="bg-surface border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
               <GuessForm
                 onSubmit={handleGuessSubmit}
                 isLoading={isSubmitting}
