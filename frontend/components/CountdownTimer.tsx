@@ -3,20 +3,22 @@
 import React, { useEffect, useState } from "react";
 
 /** Returns seconds remaining until next UTC midnight. */
-function secondsUntilMidnightUTC(): number {
+function secondsUntilMidnightIST(): number {
   const now = new Date();
+  
+  // Construct midnight for the start of tomorrow in local system time (IST)
   const midnight = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1,
-      0,
-      0,
-      0,
-      0
-    )
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0,
+    0,
+    0,
+    0
   );
-  return Math.max(0, Math.floor((midnight.getTime() - now.getTime()) / 1000));
+
+  // Difference in milliseconds converted to seconds
+  return Math.floor((midnight.getTime() - now.getTime()) / 1000);
 }
 
 function formatTime(totalSeconds: number): string {
@@ -31,10 +33,10 @@ export const CountdownTimer: React.FC = () => {
 
   useEffect(() => {
     // Initialise after mount (SSR safe)
-    setSeconds(secondsUntilMidnightUTC());
+    setSeconds(secondsUntilMidnightIST());
 
     const id = setInterval(() => {
-      setSeconds(secondsUntilMidnightUTC());
+      setSeconds(secondsUntilMidnightIST());
     }, 1000);
 
     return () => clearInterval(id);
