@@ -5,17 +5,19 @@ import React, { useEffect, useState } from "react";
 /** Returns seconds remaining until next UTC midnight. */
 function secondsUntilMidnightIST(): number {
   const now = new Date();
+  
+  // Construct midnight for the start of tomorrow in local system time (IST)
   const midnight = new Date(
-    
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1,
-      0,
-      0,
-      0,
-      0
-    
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0,
+    0,
+    0,
+    0
   );
+
+  // Difference in milliseconds converted to seconds
   return Math.floor((midnight.getTime() - now.getTime()) / 1000);
 }
 
