@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "clue": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+    "answer": "echo",
+    "word_lengths": [4]
+  },
+  {
+    "id": 2,
+    "clue": "The more of this you take, the more you leave behind. What is it?",
+    "answer": "footsteps",
+    "word_lengths": [9]
+  },
+  {
+    "id": 3,
+    "clue": "What has keys, but no locks; space, but no room; and you can enter, but never go inside?",
+    "answer": "keyboard",
+    "word_lengths": [8]
+  },
+  {
+    "id": 4,
+    "clue": "What can travel around the world while staying in a single corner?",
+    "answer": "stamp",
+    "word_lengths": [5]
+  },
+  {
+    "id": 5,
+    "clue": "What has a head and a tail that will never meet, and has no body?",
+    "answer": "coin",
+    "word_lengths": [4]
+  },
+  {
+    "id": 6,
+    "clue": "I am tall when I am young, and I am short when I am old. What am I?",
+    "answer": "candle",
+    "word_lengths": [6]
+  },
+  {
+    "id": 7,
+    "clue": "What has a neck but no head, and wears a cap?",
+    "answer": "bottle",
+    "word_lengths": [6]
+  },
+  {
+    "id": 8,
+    "clue": "What belongs to you, but everyone else uses it more than you do?",
+    "answer": "name",
+    "word_lengths": [4]
+  },
+  {
+    "id": 9,
+    "clue": "What gets wetter and wetter the more it dries?",
+    "answer": "towel",
+    "word_lengths": [5]
+  },
+  {
+    "id": 10,
+    "clue": "What can you catch, but never throw?",
+    "answer": "cold",
+    "word_lengths": [4]
+  },
+  {
+    "id": 11,
+    "clue": "What runs around the whole yard without moving an inch?",
+    "answer": "fence",
+    "word_lengths": [5]
+  },
+  {
+    "id": 12,
+    "clue": "What has many rings but no fingers?",
+    "answer": "tree",
+    "word_lengths": [4]
+  },
+  {
+    "id": 13,
+    "clue": "What building has the most stories?",
+    "answer": "library",
+    "word_lengths": [7]
+  },
+  {
+    "id": 14,
+    "clue": "What goes up but never comes down?",
+    "answer": "age",
+    "word_lengths": [3]
+  },
+  {
+    "id": 15,
+    "clue": "If you have me, you want to share me. If you share me, you haven't got me. What am I?",
+    "answer": "secret",
+    "word_lengths": [6]
+  },
+  {
+    "id": 16,
+    "clue": "What has hands, but cannot clap?",
+    "answer": "clock",
+    "word_lengths": [5]
+  },
+  {
+    "id": 17,
+    "clue": "What has to be broken before you can use it?",
+    "answer": "egg",
+    "word_lengths": [3]
+  },
+  {
+    "id": 18,
+    "clue": "I have branches, but no fruit, trunk or leaves. What am I?",
+    "answer": "bank",
+    "word_lengths": [4]
+  },
+  {
+    "id": 19,
+    "clue": "What has many teeth, but cannot bite?",
+    "answer": "comb",
+    "word_lengths": [4]
+  },
+  {
+    "id": 20,
+    "clue": "What begins with T, finishes with T, and has T in it?",
+    "answer": "teapot",
+    "word_lengths": [6]
+  },
+  {
+    "id": 21,
+    "clue": "What is full of holes but still holds water?",
+    "answer": "sponge",
+    "word_lengths": [6]
+  },
+  {
+    "id": 22,
+    "clue": "What question can you never answer yes to?",
+    "answer": "asleep",
+    "word_lengths": [6]
+  },
+  {
+    "id": 23,
+    "clue": "What can you break, even if you never pick it up or touch it?",
+    "answer": "promise",
+    "word_lengths": [7]
+  },
+  {
+    "id": 24,
+    "clue": "I shave every day, but my beard stays the same. What am I?",
+    "answer": "barber",
+    "word_lengths": [6]
+  },
+  {
+    "id": 25,
+    "clue": "What has a thumb and four fingers, but is not a hand?",
+    "answer": "glove",
+    "word_lengths": [5]
+  },
+  {
+    "id": 26,
+    "clue": "Where does today come before yesterday?",
+    "answer": "dictionary",
+    "word_lengths": [10]
+  },
+  {
+    "id": 27,
+    "clue": "What kind of room has no doors or windows?",
+    "answer": "mushroom",
+    "word_lengths": [8]
+  },
+  {
+    "id": 28,
+    "clue": "Forward I am heavy, but backward I am not. What am I?",
+    "answer": "ton",
+    "word_lengths": [3]
+  },
+  {
+    "id": 29,
+    "clue": "What has one eye, but cannot see at all?",
+    "answer": "needle",
+    "word_lengths": [6]
+  },
+  {
+    "id": 30,
+    "clue": "The person who makes it has no need of it; the person who buys it has no use for it. The person who uses it can neither see nor feel it. What is it?",
+    "answer": "coffin",
+    "word_lengths": [6]
+  }
+]
