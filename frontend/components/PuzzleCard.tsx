@@ -50,60 +50,33 @@ export const PuzzleCard: React.FC<PuzzleCardProps> = ({ puzzle, dateStr }) => {
         {/* Clue */}
         <h2
           id="riddle-heading"
-          className="text-lg sm:text-xl font-medium text-ink leading-relaxed font-serif mb-6"
+          className="text-lg sm:text-xl font-medium text-ink leading-relaxed font-serif mb-5"
         >
           &ldquo;{puzzle.clue}&rdquo;
         </h2>
 
-        {/* Letter-box placeholders */}
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-            Answer&nbsp;—&nbsp;
-            {wordCount === 1
-              ? `${totalLetters} letters`
-              : `${wordCount} words, ${totalLetters} letters total`}
-          </p>
-
-          {/* One row of boxes per word */}
-          <div className="flex flex-wrap gap-3">
-            {puzzle.word_lengths.map((len, wi) => (
-              <div key={wi} className="flex items-center gap-1">
-                {Array.from({ length: len }).map((_, li) => (
-                  <div
-                    key={li}
-                    className="w-8 h-9 flex items-end justify-center pb-1 border-b-2 border-ink/30"
-                    aria-hidden="true"
-                  >
-                    <span className="text-[10px] text-muted/40 leading-none select-none">
-                      _
-                    </span>
-                  </div>
-                ))}
-                {wi < puzzle.word_lengths.length - 1 && (
-                  <span className="mx-1 text-xs text-muted/50 select-none">
-                    /
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Word-length badges */}
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {puzzle.word_lengths.map((len, idx) => (
-              <span
-                key={idx}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
-                style={{
-                  background: "rgba(255,107,0,0.08)",
-                  borderColor: "rgba(255,107,0,0.25)",
-                  color: "#E55F00",
-                }}
-              >
-                {len} {len === 1 ? "letter" : "letters"}
-              </span>
-            ))}
-          </div>
+        {/* Word-length hint badges */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-widest text-muted">
+            Hint:
+          </span>
+          {puzzle.word_lengths.map((len, idx) => (
+            <span
+              key={idx}
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
+              style={{
+                background: "rgba(255,107,0,0.08)",
+                borderColor: "rgba(255,107,0,0.25)",
+                color: "#E55F00",
+              }}
+            >
+              {len} {len === 1 ? "letter" : "letters"}
+            </span>
+          ))}
+          <span className="text-xs text-muted">
+            ({wordCount === 1 ? "1 word" : `${wordCount} words`},{" "}
+            {totalLetters} total)
+          </span>
         </div>
       </div>
     </section>

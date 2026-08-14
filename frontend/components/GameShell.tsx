@@ -129,6 +129,7 @@ export const GameShell: React.FC = () => {
               <GuessForm
                 onSubmit={handleGuessSubmit}
                 isLoading={isSubmitting}
+                wordLengths={gameState.puzzle.word_lengths}
               />
             </div>
           )}
