@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./streak.db"
-    FRONTEND_URL: str = "https://streak-eosin.vercel.app"
+    FRONTEND_URL: str = "streak-eosin.vercel.app"
     PUZZLE_START_DATE: date = date(2026, 1, 1)
     GAME_TIMEZONE: str = "UTC"
     ENVIRONMENT: str = "development"
