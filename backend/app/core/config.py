@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./streak.db"
     FRONTEND_URL: str = "https://streak-eosin.vercel.app, http://localhost:3000"
     PUZZLE_START_DATE: date = date(2026, 1, 1)
-    GAME_TIMEZONE: str = "UTC"
+    GAME_TIMEZONE: str = "IST"
     ENVIRONMENT: str = "development"
 
     model_config = SettingsConfigDict(
