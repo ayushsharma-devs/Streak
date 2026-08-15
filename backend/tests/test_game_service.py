@@ -146,7 +146,7 @@ def test_invariant_14_database_uniqueness_prevents_duplicate_attempts():
         puzzle_date=puzzle_date,
         guess="echo",
         correct=True,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(timezone.UTC),
     )
     db.add(attempt1)
     db.commit()
@@ -159,7 +159,7 @@ def test_invariant_14_database_uniqueness_prevents_duplicate_attempts():
         puzzle_date=puzzle_date,
         guess="wrong",
         correct=False,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(timezone.UTC),
     )
     db.add(attempt2)
     with pytest.raises(IntegrityError):

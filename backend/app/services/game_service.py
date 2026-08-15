@@ -145,7 +145,7 @@ def process_guess(db: Session, player_id: uuid.UUID, raw_guess: str) -> GuessRes
         puzzle_date=today,
         guess=normalized_guess,
         correct=is_correct,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(timezone.IST),
     )
 
     db.add(attempt)

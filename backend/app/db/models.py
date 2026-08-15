@@ -33,7 +33,7 @@ class Player(Base):
     created_at = Column(
         DateTime(timezone=True),
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.UTC),
     )
 
     __table_args__ = (
@@ -70,7 +70,7 @@ class Attempt(Base):
     created_at = Column(
         DateTime(timezone=True),
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.UTC),
     )
 
     player = relationship("Player", back_populates="attempts")

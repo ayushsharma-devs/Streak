@@ -72,6 +72,8 @@ streak/
 │   ├── postcss.config.mjs
 │   ├── eslint.config.mjs
 │   ├── app/
+        ├──game/
+          └── page.tsx
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   └── page.tsx
@@ -82,6 +84,7 @@ streak/
 │   │   ├── ResultCard.tsx
 │   │   ├── StreakDisplay.tsx
 │   │   ├── LoadingState.tsx
+        ├── CountdownTimer.tsx
 │   │   └── ErrorState.tsx
 │   ├── lib/
 │   │   ├── api.ts
@@ -124,6 +127,7 @@ streak/
 │   │       └── puzzles.json
 │   └── tests/
 │       ├── __init__.py
+        ├── stress_test.py
 │       ├── test_puzzle_service.py
 │       ├── test_game_service.py
 │       ├── test_validation.py
@@ -141,6 +145,7 @@ streak/
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `player_id` | `UUID` | `PRIMARY KEY` | Anonymous player identifier |
+|`username` | `STRING` | `NULL` | Player username
 | `current_streak` | `INTEGER` | `NOT NULL DEFAULT 0, CHECK (>= 0)` | Consecutive daily wins |
 | `highest_streak` | `INTEGER` | `NOT NULL DEFAULT 0, CHECK (>= 0)` | All-time highest streak |
 | `last_played_date` | `DATE` | `NULL` | Most recent date player submitted a guess |
@@ -172,7 +177,7 @@ streak/
 ### 2. Zero Answer Leakage
 - **Why**: Answers live exclusively on the backend in `backend/app/data/puzzles.json`.
 - The frontend `GET /api/game/today` endpoint returns only clue, safe metadata, and word lengths.
-- Neither the answer nor raw guesses are returned over the API or stored in `attempts`.
+
 
 ### 3. Dual-Layer One-Attempt Enforcement
 - **Application Level**: Pre-flight verification in `game_service.py` checks existing attempts and acquires row locks.
@@ -307,7 +312,7 @@ pytest
 - Environment Variables:
   - `DATABASE_URL`: `<Supabase Connection String>`
   - `FRONTEND_URL`: `https://your-app.vercel.app`
-  - `GAME_TIMEZONE`: `UTC`
+  - `GAME_TIMEZONE`: `IST`
   - `PUZZLE_START_DATE`: `2026-01-01`
 
 ### 3. Frontend on Vercel
